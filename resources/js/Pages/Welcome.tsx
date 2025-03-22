@@ -3,6 +3,7 @@ import React from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { Head } from '@inertiajs/react';
+import { useAppearance } from '@/Hooks/useAppearance';
 
 interface Props {
   canLogin: boolean;
@@ -19,6 +20,7 @@ export default function Welcome({
 }: Props) {
   const route = useRoute();
   const page = useTypedPage();
+  useAppearance();
 
   return (
     <>

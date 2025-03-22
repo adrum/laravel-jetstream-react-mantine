@@ -5,13 +5,9 @@ import React, { useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { User } from '@/types';
 import useTypedPage from '@/Hooks/useTypedPage';
+import { Button, InputError, InputLabel, TextInput } from '@mantine/core';
 
 interface Props {
   user: User;
@@ -88,12 +84,13 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             Saved.
           </ActionMessage>
 
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </>
       )}
     >
@@ -108,7 +105,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             onChange={updatePhotoPreview}
           />
 
-          <InputLabel htmlFor="photo" value="Photo" />
+          <InputLabel htmlFor="photo">Photo</InputLabel>
 
           {photoPreview ? (
             // <!-- New Profile Photo Preview -->
@@ -134,53 +131,54 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             </div>
           )}
 
-          <SecondaryButton
+          <Button
             className="mt-2 mr-2"
-            type="button"
+            variant="outline"
             onClick={selectNewPhoto}
           >
             Select A New Photo
-          </SecondaryButton>
+          </Button>
 
           {user.profile_photo_path ? (
-            <SecondaryButton
+            <Button
               type="button"
+              variant="outline"
               className="mt-2"
               onClick={deletePhoto}
             >
               Remove Photo
-            </SecondaryButton>
+            </Button>
           ) : null}
 
-          <InputError message={form.errors.photo} className="mt-2" />
+          <InputError className="mt-2">{form.errors.photo}</InputError>
         </div>
       ) : null}
 
       {/* <!-- Name --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Name" />
         <TextInput
           id="name"
           type="text"
           className="mt-1 block w-full"
+          label="Name"
+          error={form.errors.name}
           value={form.data.name}
           onChange={e => form.setData('name', e.currentTarget.value)}
           autoComplete="name"
         />
-        <InputError message={form.errors.name} className="mt-2" />
       </div>
 
       {/* <!-- Email --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="email" value="Email" />
         <TextInput
           id="email"
           type="email"
+          label="Email"
+          error={form.errors.email}
           className="mt-1 block w-full"
           value={form.data.email}
           onChange={e => form.setData('email', e.currentTarget.value)}
         />
-        <InputError message={form.errors.email} className="mt-2" />
 
         {page.props.jetstream.hasEmailVerification &&
         user.email_verified_at === null ? (

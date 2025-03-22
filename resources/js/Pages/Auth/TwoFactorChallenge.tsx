@@ -3,10 +3,7 @@ import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import AuthenticationCard from '@/Components/AuthenticationCard';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { Button, TextInput } from '@mantine/core';
 
 export default function TwoFactorChallenge() {
   const route = useRoute();
@@ -52,26 +49,27 @@ export default function TwoFactorChallenge() {
       <form onSubmit={onSubmit}>
         {recovery ? (
           <div>
-            <InputLabel htmlFor="recovery_code">Recovery Code</InputLabel>
             <TextInput
               id="recovery_code"
               type="text"
+              label="Recovery Code"
               className="mt-1 block w-full"
               value={form.data.recovery_code}
+              error={form.errors.recovery_code}
               onChange={e =>
                 form.setData('recovery_code', e.currentTarget.value)
               }
               ref={recoveryCodeRef}
               autoComplete="one-time-code"
             />
-            <InputError className="mt-2" message={form.errors.recovery_code} />
           </div>
         ) : (
           <div>
-            <InputLabel htmlFor="code">Code</InputLabel>
             <TextInput
               id="code"
               type="text"
+              label="Code"
+              error={form.errors.code}
               inputMode="numeric"
               className="mt-1 block w-full"
               value={form.data.code}
@@ -80,25 +78,21 @@ export default function TwoFactorChallenge() {
               autoComplete="one-time-code"
               ref={codeRef}
             />
-            <InputError className="mt-2" message={form.errors.code} />
           </div>
         )}
 
         <div className="flex items-center justify-end mt-4">
-          <button
-            type="button"
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
-            onClick={toggleRecovery}
-          >
+          <Button variant="subtle" type="button" onClick={toggleRecovery}>
             {recovery ? 'Use an authentication code' : 'Use a recovery code'}
-          </button>
+          </Button>
 
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames('ml-4', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Log in
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </AuthenticationCard>

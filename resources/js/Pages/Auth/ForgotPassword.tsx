@@ -3,10 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import useRoute from '@/Hooks/useRoute';
 import AuthenticationCard from '@/Components/AuthenticationCard';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { Button, TextInput } from '@mantine/core';
 
 interface Props {
   status: string;
@@ -41,26 +38,27 @@ export default function ForgotPassword({ status }: Props) {
 
       <form onSubmit={onSubmit}>
         <div>
-          <InputLabel htmlFor="email">Email</InputLabel>
           <TextInput
             id="email"
             type="email"
+            label="Email"
+            error={form.errors.email}
             className="mt-1 block w-full"
             value={form.data.email}
             onChange={e => form.setData('email', e.currentTarget.value)}
             required
             autoFocus
           />
-          <InputError className="mt-2" message={form.errors.email} />
         </div>
 
         <div className="flex items-center justify-end mt-4">
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Email Password Reset Link
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </AuthenticationCard>

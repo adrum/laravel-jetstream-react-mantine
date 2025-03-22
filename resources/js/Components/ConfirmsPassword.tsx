@@ -3,10 +3,7 @@ import classNames from 'classnames';
 import React, { PropsWithChildren, useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import DialogModal from '@/Components/DialogModal';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import { Button, TextInput } from '@mantine/core';
 
 interface Props {
   title?: string;
@@ -73,8 +70,12 @@ export default function ConfirmsPassword({
     <span>
       <span onClick={startConfirmingPassword}>{children}</span>
 
-      <DialogModal isOpen={confirmingPassword} onClose={closeModal}>
-        <DialogModal.Content title={title}>
+      <DialogModal
+        opened={confirmingPassword}
+        title={title}
+        onClose={closeModal}
+      >
+        <DialogModal.Content>
           {content}
 
           <div className="mt-4">
@@ -83,26 +84,27 @@ export default function ConfirmsPassword({
               type="password"
               className="mt-1 block w-3/4"
               placeholder="Password"
+              error={form.error}
               value={form.password}
               onChange={e =>
                 setForm({ ...form, password: e.currentTarget.value })
               }
             />
-
-            <InputError message={form.error} className="mt-2" />
           </div>
         </DialogModal.Content>
 
         <DialogModal.Footer>
-          <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+          <Button variant="outline" onClick={closeModal}>
+            Cancel
+          </Button>
 
-          <PrimaryButton
+          <Button
             className={classNames('ml-2', { 'opacity-25': form.processing })}
             onClick={confirmPassword}
             disabled={form.processing}
           >
             {button}
-          </PrimaryButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
     </span>

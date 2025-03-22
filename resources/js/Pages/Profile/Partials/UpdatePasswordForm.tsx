@@ -4,10 +4,7 @@ import React, { useRef } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import { Button, TextInput } from '@mantine/core';
 
 export default function UpdatePasswordForm() {
   const route = useRoute();
@@ -51,62 +48,58 @@ export default function UpdatePasswordForm() {
             Saved.
           </ActionMessage>
 
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </>
       )}
     >
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="current_password">Current Password</InputLabel>
         <TextInput
           id="current_password"
           type="password"
           className="mt-1 block w-full"
+          label="Current Password"
           ref={currentPasswordRef}
           value={form.data.current_password}
+          error={form.errors.current_password}
           onChange={e =>
             form.setData('current_password', e.currentTarget.value)
           }
           autoComplete="current-password"
         />
-        <InputError message={form.errors.current_password} className="mt-2" />
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="password">New Password</InputLabel>
         <TextInput
           id="password"
           type="password"
+          label="New Password"
+          error={form.errors.password}
           className="mt-1 block w-full"
           value={form.data.password}
           onChange={e => form.setData('password', e.currentTarget.value)}
           autoComplete="new-password"
           ref={passwordRef}
         />
-        <InputError message={form.errors.password} className="mt-2" />
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="password_confirmation">
-          Confirm Password
-        </InputLabel>
         <TextInput
           id="password_confirmation"
           type="password"
           className="mt-1 block w-full"
+          label="Confirm Password"
+          error={form.errors.password_confirmation}
           value={form.data.password_confirmation}
           onChange={e =>
             form.setData('password_confirmation', e.currentTarget.value)
           }
           autoComplete="new-password"
-        />
-        <InputError
-          message={form.errors.password_confirmation}
-          className="mt-2"
         />
       </div>
     </FormSection>

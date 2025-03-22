@@ -1,5 +1,5 @@
+import { Modal, ModalProps } from '@mantine/core';
 import React, { PropsWithChildren } from 'react';
-import Modal, { ModalProps } from '@/Components/Modal';
 
 ConfirmationModal.Content = function ConfirmationModalContent({
   title,
@@ -52,5 +52,9 @@ export default function ConfirmationModal({
   children,
   ...props
 }: PropsWithChildren<ModalProps>) {
-  return <Modal {...props}>{children}</Modal>;
+  return (
+    <Modal centered {...props}>
+      {children}
+    </Modal>
+  );
 }

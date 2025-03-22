@@ -4,19 +4,14 @@ import React, { useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import ActionSection from '@/Components/ActionSection';
-import Checkbox from '@/Components/Checkbox';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
+
 import DialogModal from '@/Components/DialogModal';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
 import SectionBorder from '@/Components/SectionBorder';
 import { ApiToken } from '@/types';
 import useTypedPage from '@/Hooks/useTypedPage';
+import { Button, Checkbox, InputLabel, Modal, TextInput } from '@mantine/core';
+import ConfirmationModal from '@/Components/ConfirmationModal';
 
 interface Props {
   tokens: ApiToken[];
@@ -110,33 +105,31 @@ export default function APITokenManager({
               Created.
             </ActionMessage>
 
-            <PrimaryButton
+            <Button
+              type="submit"
               className={classNames({
                 'opacity-25': createApiTokenForm.processing,
               })}
               disabled={createApiTokenForm.processing}
             >
               Create
-            </PrimaryButton>
+            </Button>
           </>
         )}
       >
         {/* <!-- Token Name --> */}
         <div className="col-span-6 sm:col-span-4">
-          <InputLabel htmlFor="name">Name</InputLabel>
           <TextInput
             id="name"
             type="text"
+            label="Name"
+            error={createApiTokenForm.errors.name}
             className="mt-1 block w-full"
             value={createApiTokenForm.data.name}
             onChange={e =>
               createApiTokenForm.setData('name', e.currentTarget.value)
             }
             autoFocus
-          />
-          <InputError
-            message={createApiTokenForm.errors.name}
-            className="mt-2"
           />
         </div>
 
@@ -216,20 +209,20 @@ export default function APITokenManager({
                       )}
 
                       {availablePermissions.length > 0 ? (
-                        <PrimaryButton
+                        <Button
                           className="cursor-pointer ml-6 text-sm text-gray-400 underline"
                           onClick={() => manageApiTokenPermissions(token)}
                         >
                           Permissions
-                        </PrimaryButton>
+                        </Button>
                       ) : null}
 
-                      <PrimaryButton
+                      <Button
                         className="cursor-pointer ml-6 text-sm text-red-500"
                         onClick={() => confirmApiTokenDeletion(token)}
                       >
                         Delete
-                      </PrimaryButton>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -241,7 +234,7 @@ export default function APITokenManager({
 
       {/* <!-- Token Value Modal --> */}
       <DialogModal
-        isOpen={displayingToken}
+        opened={displayingToken}
         onClose={() => setDisplayingToken(false)}
       >
         <DialogModal.Content title={'API Token'}>
@@ -255,15 +248,15 @@ export default function APITokenManager({
           </div>
         </DialogModal.Content>
         <DialogModal.Footer>
-          <SecondaryButton onClick={() => setDisplayingToken(false)}>
+          <Button variant="outline" onClick={() => setDisplayingToken(false)}>
             Close
-          </SecondaryButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
 
       {/* <!-- API Token Permissions Modal --> */}
       <DialogModal
-        isOpen={!!managingPermissionsFor}
+        opened={!!managingPermissionsFor}
         onClose={() => setManagingPermissionsFor(null)}
       >
         <DialogModal.Content title={'API Token Permissions'}>
@@ -305,11 +298,14 @@ export default function APITokenManager({
           </div>
         </DialogModal.Content>
         <DialogModal.Footer>
-          <SecondaryButton onClick={() => setManagingPermissionsFor(null)}>
+          <Button
+            variant="outline"
+            onClick={() => setManagingPermissionsFor(null)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <PrimaryButton
+          <Button
             onClick={updateApiToken}
             className={classNames('ml-2', {
               'opacity-25': updateApiTokenForm.processing,
@@ -317,24 +313,29 @@ export default function APITokenManager({
             disabled={updateApiTokenForm.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
 
       {/* <!-- Delete Token Confirmation Modal --> */}
       <ConfirmationModal
-        isOpen={!!apiTokenBeingDeleted}
+        opened={!!apiTokenBeingDeleted}
         onClose={() => setApiTokenBeingDeleted(null)}
+        centered
       >
         <ConfirmationModal.Content title={'Delete API Token'}>
           Are you sure you would like to delete this API token?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setApiTokenBeingDeleted(null)}>
+          <Button
+            variant="outline"
+            onClick={() => setApiTokenBeingDeleted(null)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <DangerButton
+          <Button
+            color="red"
             onClick={deleteApiToken}
             className={classNames('ml-2', {
               'opacity-25': deleteApiTokenForm.processing,
@@ -342,7 +343,7 @@ export default function APITokenManager({
             disabled={deleteApiTokenForm.processing}
           >
             Delete
-          </DangerButton>
+          </Button>
         </ConfirmationModal.Footer>
       </ConfirmationModal>
     </div>

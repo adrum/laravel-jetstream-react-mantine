@@ -1,12 +1,11 @@
 import useRoute from '@/Hooks/useRoute';
 import ActionSection from '@/Components/ActionSection';
 import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { Team } from '@/types';
 import { useForm } from '@inertiajs/react';
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { Button } from '@mantine/core';
 
 interface Props {
   team: Team;
@@ -39,12 +38,14 @@ export default function DeleteTeamForm({ team }: Props) {
       </div>
 
       <div className="mt-5">
-        <DangerButton onClick={confirmTeamDeletion}>Delete Team</DangerButton>
+        <Button color="red" onClick={confirmTeamDeletion}>
+          Delete Team
+        </Button>
       </div>
 
       {/* <!-- Delete Team Confirmation Modal --> */}
       <ConfirmationModal
-        isOpen={confirmingTeamDeletion}
+        opened={confirmingTeamDeletion}
         onClose={() => setConfirmingTeamDeletion(false)}
       >
         <ConfirmationModal.Content title={'Delete Team'}>
@@ -53,17 +54,21 @@ export default function DeleteTeamForm({ team }: Props) {
         </ConfirmationModal.Content>
 
         <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setConfirmingTeamDeletion(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setConfirmingTeamDeletion(false)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <DangerButton
+          <Button
+            color="red"
             onClick={deleteTeam}
             className={classNames('ml-2', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Delete Team
-          </DangerButton>
+          </Button>
         </ConfirmationModal.Footer>
       </ConfirmationModal>
     </ActionSection>

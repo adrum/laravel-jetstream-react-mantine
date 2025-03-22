@@ -1,11 +1,14 @@
 import './bootstrap';
 import '../css/app.css';
 
+import theme from '@/theme';
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { RouteContext } from '@/Hooks/useRoute';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { MantineProvider } from '@mantine/core';
 
 const appName =
   window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
@@ -24,7 +27,9 @@ createInertiaApp({
     const root = createRoot(el);
     return root.render(
       <RouteContext.Provider value={(window as any).route}>
-        <App {...props} />
+        <MantineProvider theme={theme}>
+          <App {...props} />
+        </MantineProvider>
       </RouteContext.Provider>,
     );
   },

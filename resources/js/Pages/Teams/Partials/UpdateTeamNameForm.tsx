@@ -1,12 +1,9 @@
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { JetstreamTeamPermissions, Team, User } from '@/types';
 import { useForm } from '@inertiajs/react';
+import { Button, InputLabel, TextInput } from '@mantine/core';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -41,12 +38,13 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
                   Saved.
                 </ActionMessage>
 
-                <PrimaryButton
+                <Button
+                  type="submit"
                   className={classNames({ 'opacity-25': form.processing })}
                   disabled={form.processing}
                 >
                   Save
-                </PrimaryButton>
+                </Button>
               </>
             )
           : undefined
@@ -54,7 +52,7 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
     >
       {/* <!-- Team Owner Information --> */}
       <div className="col-span-6">
-        <InputLabel value="Team Owner" />
+        <InputLabel>Team Owner</InputLabel>
 
         <div className="flex items-center mt-2">
           <img
@@ -76,18 +74,16 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
 
       {/* <!-- Team Name --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Team Name" />
-
         <TextInput
           id="name"
           type="text"
+          label="Team Name"
+          error={form.errors.name}
           className="mt-1 block w-full"
           value={form.data.name}
           onChange={e => form.setData('name', e.currentTarget.value)}
           disabled={!permissions.canUpdateTeam}
         />
-
-        <InputError message={form.errors.name} className="mt-2" />
       </div>
     </FormSection>
   );

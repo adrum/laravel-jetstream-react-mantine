@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import useTypedPage from '@/Hooks/useTypedPage';
+import { Button } from '@mantine/core';
 
 export default function Banner() {
   const [show, setShow] = useState(true);
@@ -74,8 +75,9 @@ export default function Banner() {
               </div>
 
               <div className="shrink-0 sm:ml-3">
-                <button
+                <Button
                   type="button"
+                  unstyled
                   className={classNames(
                     '-mr-1 flex p-2 rounded-md focus:outline-hidden sm:-mr-2 transition',
                     {
@@ -104,7 +106,7 @@ export default function Banner() {
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
-                </button>
+                </Button>
               </div>
             </div>
           </div>

@@ -4,11 +4,8 @@ import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import classNames from 'classnames';
+import { Button, InputLabel, TextInput } from '@mantine/core';
 
 export default function CreateTeamForm() {
   const route = useRoute();
@@ -35,17 +32,18 @@ export default function CreateTeamForm() {
             Saved.
           </ActionMessage>
 
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </>
       )}
     >
       <div className="col-span-6">
-        <InputLabel value="Team Owner" />
+        <InputLabel>Team Owner</InputLabel>
 
         <div className="flex items-center mt-2">
           <img
@@ -66,16 +64,16 @@ export default function CreateTeamForm() {
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Team Name" />
         <TextInput
           id="name"
           type="text"
           className="mt-1 block w-full"
+          label="Team Name"
           value={form.data.name}
+          error={form.errors.name}
           onChange={e => form.setData('name', e.currentTarget.value)}
           autoFocus
         />
-        <InputError message={form.errors.name} className="mt-2" />
       </div>
     </FormSection>
   );

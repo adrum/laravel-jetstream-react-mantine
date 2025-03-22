@@ -4,16 +4,20 @@ import React from 'react';
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import AuthenticationCard from '@/Components/AuthenticationCard';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { Checkbox, TextInput, Button } from '@mantine/core';
+
+type FormProps = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  terms: boolean;
+};
 
 export default function Register() {
   const page = useTypedPage();
   const route = useRoute();
-  const form = useForm({
+  const form = useForm<FormProps>({
     name: '',
     email: '',
     password: '',
@@ -34,10 +38,11 @@ export default function Register() {
 
       <form onSubmit={onSubmit}>
         <div>
-          <InputLabel htmlFor="name">Name</InputLabel>
           <TextInput
             id="name"
             type="text"
+            label="Name"
+            error={form.errors.name}
             className="mt-1 block w-full"
             value={form.data.name}
             onChange={e => form.setData('name', e.currentTarget.value)}
@@ -45,43 +50,41 @@ export default function Register() {
             autoFocus
             autoComplete="name"
           />
-          <InputError className="mt-2" message={form.errors.name} />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="email">Email</InputLabel>
           <TextInput
             id="email"
             type="email"
+            label="Email"
+            error={form.errors.email}
             className="mt-1 block w-full"
             value={form.data.email}
             onChange={e => form.setData('email', e.currentTarget.value)}
             required
           />
-          <InputError className="mt-2" message={form.errors.email} />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password">Password</InputLabel>
           <TextInput
             id="password"
             type="password"
+            label="Password"
+            error={form.errors.password}
             className="mt-1 block w-full"
             value={form.data.password}
             onChange={e => form.setData('password', e.currentTarget.value)}
             required
             autoComplete="new-password"
           />
-          <InputError className="mt-2" message={form.errors.password} />
         </div>
 
         <div className="mt-4">
-          <InputLabel htmlFor="password_confirmation">
-            Confirm Password
-          </InputLabel>
           <TextInput
             id="password_confirmation"
             type="password"
+            label="Confirm Password"
+            error={form.errors.password_confirmation}
             className="mt-1 block w-full"
             value={form.data.password_confirmation}
             onChange={e =>
@@ -90,45 +93,40 @@ export default function Register() {
             required
             autoComplete="new-password"
           />
-          <InputError
-            className="mt-2"
-            message={form.errors.password_confirmation}
-          />
         </div>
 
         {page.props.jetstream.hasTermsAndPrivacyPolicyFeature && (
           <div className="mt-4">
-            <InputLabel htmlFor="terms">
-              <div className="flex items-center">
-                <Checkbox
-                  name="terms"
-                  id="terms"
-                  checked={form.data.terms}
-                  onChange={e => form.setData('terms', e.currentTarget.checked)}
-                  required
-                />
-
-                <div className="ml-2">
-                  I agree to the
-                  <a
-                    target="_blank"
-                    href={route('terms.show')}
-                    className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                  >
-                    Terms of Service
-                  </a>
-                  and
-                  <a
-                    target="_blank"
-                    href={route('policy.show')}
-                    className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                  >
-                    Privacy Policy
-                  </a>
-                </div>
-              </div>
-              <InputError className="mt-2" message={form.errors.terms} />
-            </InputLabel>
+            <div className="flex items-center">
+              <Checkbox
+                name="terms"
+                id="terms"
+                error={form.errors.terms}
+                label={
+                  <div className="ml-2">
+                    I agree to the
+                    <a
+                      target="_blank"
+                      href={route('terms.show')}
+                      className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                    >
+                      Terms of Service
+                    </a>
+                    and
+                    <a
+                      target="_blank"
+                      href={route('policy.show')}
+                      className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                    >
+                      Privacy Policy
+                    </a>
+                  </div>
+                }
+                checked={form.data.terms}
+                onChange={e => form.setData('terms', e.currentTarget.checked)}
+                required
+              />
+            </div>
           </div>
         )}
 
@@ -140,12 +138,13 @@ export default function Register() {
             Already registered?
           </Link>
 
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames('ml-4', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Register
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </AuthenticationCard>

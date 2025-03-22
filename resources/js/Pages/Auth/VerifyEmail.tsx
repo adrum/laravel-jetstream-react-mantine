@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import useRoute from '@/Hooks/useRoute';
 import AuthenticationCard from '@/Components/AuthenticationCard';
-import PrimaryButton from '@/Components/PrimaryButton';
+import { Button } from '@mantine/core';
 
 interface Props {
   status: string;
@@ -38,12 +38,13 @@ export default function VerifyEmail({ status }: Props) {
 
       <form onSubmit={onSubmit}>
         <div className="mt-4 flex items-center justify-between">
-          <PrimaryButton
+          <Button
+            type="submit"
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Resend Verification Email
-          </PrimaryButton>
+          </Button>
 
           <div>
             <Link

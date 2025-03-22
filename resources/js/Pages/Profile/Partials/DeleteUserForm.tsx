@@ -3,11 +3,8 @@ import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionSection from '@/Components/ActionSection';
-import DangerButton from '@/Components/DangerButton';
 import DialogModal from '@/Components/DialogModal';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
-import SecondaryButton from '@/Components/SecondaryButton';
+import { Button, TextInput } from '@mantine/core';
 
 export default function DeleteUserForm() {
   const route = useRoute();
@@ -49,13 +46,13 @@ export default function DeleteUserForm() {
       </div>
 
       <div className="mt-5">
-        <DangerButton onClick={confirmUserDeletion}>
+        <Button color="red" onClick={confirmUserDeletion}>
           Delete Account
-        </DangerButton>
+        </Button>
       </div>
 
       {/* <!-- Delete Account Confirmation Modal --> */}
-      <DialogModal isOpen={confirmingUserDeletion} onClose={closeModal}>
+      <DialogModal opened={confirmingUserDeletion} onClose={closeModal}>
         <DialogModal.Content title={'Delete Account'}>
           Are you sure you want to delete your account? Once your account is
           deleted, all of its resources and data will be permanently deleted.
@@ -66,23 +63,25 @@ export default function DeleteUserForm() {
               type="password"
               className="mt-1 block w-3/4"
               placeholder="Password"
+              error={form.errors.password}
               value={form.data.password}
               onChange={e => form.setData('password', e.currentTarget.value)}
             />
-
-            <InputError message={form.errors.password} className="mt-2" />
           </div>
         </DialogModal.Content>
         <DialogModal.Footer>
-          <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
+          <Button variant="outline" onClick={closeModal}>
+            Cancel
+          </Button>
 
-          <DangerButton
+          <Button
+            color="red"
             onClick={deleteUser}
             className={classNames('ml-2', { 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Delete Account
-          </DangerButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
     </ActionSection>

@@ -3,14 +3,9 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import ActionMessage from '@/Components/ActionMessage';
 import ActionSection from '@/Components/ActionSection';
 import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
 import DialogModal from '@/Components/DialogModal';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import { Button, InputError, InputLabel, TextInput } from '@mantine/core';
 import SectionBorder from '@/Components/SectionBorder';
 import {
   JetstreamTeamPermissions,
@@ -147,14 +142,15 @@ export default function TeamMemberManager({
                   Added.
                 </ActionMessage>
 
-                <PrimaryButton
+                <Button
+                  type="submit"
                   className={classNames({
                     'opacity-25': addTeamMemberForm.processing,
                   })}
                   disabled={addTeamMemberForm.processing}
                 >
                   Add
-                </PrimaryButton>
+                </Button>
               </>
             )}
           >
@@ -167,35 +163,32 @@ export default function TeamMemberManager({
 
             {/* <!-- Member Email --> */}
             <div className="col-span-6 sm:col-span-4">
-              <InputLabel htmlFor="email" value="Email" />
               <TextInput
                 id="email"
                 type="email"
+                label="Email"
+                error={addTeamMemberForm.errors.email}
                 className="mt-1 block w-full"
                 value={addTeamMemberForm.data.email}
                 onChange={e =>
                   addTeamMemberForm.setData('email', e.currentTarget.value)
                 }
               />
-              <InputError
-                message={addTeamMemberForm.errors.email}
-                className="mt-2"
-              />
             </div>
 
             {/* <!-- Role --> */}
             {availableRoles.length > 0 ? (
               <div className="col-span-6 lg:col-span-4">
-                <InputLabel htmlFor="roles" value="Role" />
-                <InputError
-                  message={addTeamMemberForm.errors.role}
-                  className="mt-2"
-                />
+                <InputLabel htmlFor="roles">Role</InputLabel>
+                <InputError className="mt-2">
+                  {addTeamMemberForm.errors.role}
+                </InputError>
 
                 <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
                   {availableRoles.map((role, i) => (
-                    <button
+                    <Button
                       type="button"
+                      unstyled
                       className={classNames(
                         'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-hidden focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
                         {
@@ -251,7 +244,7 @@ export default function TeamMemberManager({
                           {role.description}
                         </div>
                       </div>
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -287,12 +280,15 @@ export default function TeamMemberManager({
                   <div className="flex items-center">
                     {/* <!-- Cancel Team Invitation --> */}
                     {userPermissions.canRemoveTeamMembers ? (
-                      <button
-                        className="cursor-pointer ml-6 text-sm text-red-500 focus:outline-hidden"
+                      <Button
+                        variant="subtle"
+                        size="sm"
+                        color="red"
+                        className="ml-6"
                         onClick={() => cancelTeamInvitation(invitation)}
                       >
                         Cancel
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                 </div>
@@ -333,12 +329,17 @@ export default function TeamMemberManager({
                     {/* <!-- Manage Team Member Role --> */}
                     {userPermissions.canAddTeamMembers &&
                     availableRoles.length ? (
-                      <button
-                        className="ml-2 text-sm text-gray-400 underline"
+                      <Button
+                        size="sm"
+                        color="gray"
+                        variant="subtle"
+                        className="ml-2"
                         onClick={() => manageRole(user)}
                       >
-                        {displayableRole(user.membership.role)}
-                      </button>
+                        <span className="underline">
+                          {displayableRole(user.membership.role)}
+                        </span>
+                      </Button>
                     ) : availableRoles.length ? (
                       <div className="ml-2 text-sm text-gray-400">
                         {displayableRole(user.membership.role)}
@@ -347,22 +348,28 @@ export default function TeamMemberManager({
 
                     {/* <!-- Leave Team --> */}
                     {page.props.auth.user?.id === user.id ? (
-                      <button
-                        className="cursor-pointer ml-6 text-sm text-red-500"
+                      <Button
+                        color="red"
+                        variant="subtle"
+                        size="sm"
+                        className="ml-6"
                         onClick={confirmLeavingTeam}
                       >
                         Leave
-                      </button>
+                      </Button>
                     ) : null}
 
                     {/* <!-- Remove Team Member --> */}
                     {userPermissions.canRemoveTeamMembers ? (
-                      <button
-                        className="cursor-pointer ml-6 text-sm text-red-500"
+                      <Button
+                        color="red"
+                        variant="subtle"
+                        size="sm"
+                        className="ml-2"
                         onClick={() => confirmTeamMemberRemoval(user)}
                       >
                         Remove
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                 </div>
@@ -374,15 +381,17 @@ export default function TeamMemberManager({
 
       {/* <!-- Role Management Modal --> */}
       <DialogModal
-        isOpen={currentlyManagingRole}
+        opened={currentlyManagingRole}
+        title={'Manage Role'}
         onClose={() => setCurrentlyManagingRole(false)}
       >
-        <DialogModal.Content title={'Manage Role'}></DialogModal.Content>
+        <DialogModal.Content></DialogModal.Content>
         {managingRoleFor ? (
           <div>
             <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
               {availableRoles.map((role, i) => (
-                <button
+                <Button
+                  unstyled
                   type="button"
                   className={classNames(
                     'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-hidden focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
@@ -436,17 +445,20 @@ export default function TeamMemberManager({
                       {role.description}
                     </div>
                   </div>
-                </button>
+                </Button>
               ))}
             </div>
           </div>
         ) : null}
         <DialogModal.Footer>
-          <SecondaryButton onClick={() => setCurrentlyManagingRole(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setCurrentlyManagingRole(false)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <PrimaryButton
+          <Button
             onClick={updateRole}
             className={classNames('ml-2', {
               'opacity-25': updateRoleForm.processing,
@@ -454,24 +466,28 @@ export default function TeamMemberManager({
             disabled={updateRoleForm.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
 
       {/* <!-- Leave Team Confirmation Modal --> */}
       <ConfirmationModal
-        isOpen={confirmingLeavingTeam}
+        opened={confirmingLeavingTeam}
         onClose={() => setConfirmingLeavingTeam(false)}
       >
         <ConfirmationModal.Content title={'Leave Team'}>
           Are you sure you would like to leave this team?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setConfirmingLeavingTeam(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setConfirmingLeavingTeam(false)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <DangerButton
+          <Button
+            color="red"
             onClick={leaveTeam}
             className={classNames('ml-2', {
               'opacity-25': leaveTeamForm.processing,
@@ -479,24 +495,28 @@ export default function TeamMemberManager({
             disabled={leaveTeamForm.processing}
           >
             Leave
-          </DangerButton>
+          </Button>
         </ConfirmationModal.Footer>
       </ConfirmationModal>
 
       {/* <!-- Remove Team Member Confirmation Modal --> */}
       <ConfirmationModal
-        isOpen={!!teamMemberBeingRemoved}
+        opened={!!teamMemberBeingRemoved}
         onClose={() => setTeamMemberBeingRemoved(null)}
       >
         <ConfirmationModal.Content title={'Remove Team Member'}>
           Are you sure you would like to remove this person from the team?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setTeamMemberBeingRemoved(null)}>
+          <Button
+            variant="outline"
+            onClick={() => setTeamMemberBeingRemoved(null)}
+          >
             Cancel
-          </SecondaryButton>
+          </Button>
 
-          <DangerButton
+          <Button
+            color="red"
             onClick={removeTeamMember}
             className={classNames('ml-2', {
               'opacity-25': removeTeamMemberForm.processing,
@@ -504,7 +524,7 @@ export default function TeamMemberManager({
             disabled={removeTeamMemberForm.processing}
           >
             Remove
-          </DangerButton>
+          </Button>
         </ConfirmationModal.Footer>
       </ConfirmationModal>
     </div>

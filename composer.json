@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "adrum/laravel-jetstream-react-typescript",
+    "name": "adrum/laravel-jetstream-react-mantine",
     "type": "project",
-    "description": "A starter kit for the Laravel framework using Jetstream, Inertia.js, React (TS), and HeadlessUI.",
+    "description": "A starter kit for the Laravel framework using Jetstream, Inertia.js, React (TS), and Mantine.",
     "keywords": [
         "laravel",
         "framework"
