@@ -1,4 +1,4 @@
-# Laravel Jetstream React (Typescript) Starter Kit
+# Laravel Jetstream React (Mantine) Starter Kit
 
 ## Introduction
 
@@ -6,12 +6,12 @@ A React starter kit based on Laravel Jetstream which provides a robust, modern s
 
 Inertia allows you to build modern, single-page React applications using classic server-side routing and controllers. This lets you enjoy the frontend power of React combined with the incredible backend productivity of Laravel and lightning-fast Vite compilation.
 
-This React starter kit utilizes React 19, TypeScript, Tailwind, and the [HeadlessUI](https://headlessui.com/) component library.
+This React starter kit utilizes React 19, TypeScript, Tailwind, and the [Mantine](https://mantine.dev/) component library.
 
 ## Getting Started
 
 ```bash
-laravel new --using=adrum/laravel-jetstream-react-typescript
+laravel new --using=adrum/laravel-jetstream-react-mantine
 ```
 
 ## Documentation
@@ -30,4 +30,4 @@ Check out my other Laravel starter kits:
 
 ## License
 
-The Laravel Jetstream React (Typescript) Starter Kit starter kit is open-sourced software licensed under the MIT license.
+The Laravel Jetstream React (Mantine) Starter Kit starter kit is open-sourced software licensed under the MIT license.
